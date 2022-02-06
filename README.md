@@ -11,7 +11,7 @@ Wemp is a simple menu for managing [Nginx](https://nginx.org), [MySQL8](https://
 
 Forked from [electronfriends/wemp](https://github.com/electronfriends/wemp)
 
-The aim is to always provide the latest version of these services without having to update them manually.
+The aim of this project is to always provide the latest version of these services without having to update them manually.
 
 ## Features
 
