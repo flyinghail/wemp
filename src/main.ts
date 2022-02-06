@@ -11,7 +11,7 @@ if (!gotTheLock) {
     app.quit()
 } else {
     // Set the Application User Model ID
-    app.setAppUserModelId('com.electronfriends.wemp')
+    app.setAppUserModelId('com.hail.wemp')
 
     // Someone tried to run a second instance, we should focus our tray
     app.on('second-instance', () => {

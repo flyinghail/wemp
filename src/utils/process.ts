@@ -3,9 +3,9 @@ import { ObjectEncodingOptions } from 'fs'
 
 export default class Process {
     private child: ChildProcess | null = null
-    private command: string
-    private args: string[]
-    private options: (ObjectEncodingOptions & ExecFileOptions) | null | undefined
+    private readonly command: string
+    private readonly args: string[]
+    private readonly options: (ObjectEncodingOptions & ExecFileOptions) | null | undefined
 
     /**
      * @constructor

@@ -1,7 +1,6 @@
 import { dialog } from 'electron'
 import settings from 'electron-settings'
 import fs from 'fs'
-import fetch from 'node-fetch'
 import path from 'path'
 
 import config from '../config'
@@ -11,9 +10,9 @@ import { onServiceDownload, onServiceDownloadError, onServiceError } from '../ut
 import { updateMenuStatus } from './menu'
 
 /**
- * Store the service objects in an array.
+ * Store the service objects.
  */
-const services: any = []
+const services: {[key: string]: Service} = {}
 
 /**
  * Check if any of the services need to be installed or updated.
@@ -26,11 +25,14 @@ export async function checkServices(): Promise<void> {
 
     for (const service of config.services) {
         const serviceName = service.name.toLowerCase()
-        const servicePath = path.join(config.paths.services, service.name)
+        const servicePath = path.join(config.paths.services, serviceName)
         const serviceVersion = settings.getSync(serviceName)
 
         // Create a service instance
-        if (!service.interface) services[service.name] = require(`../services/${serviceName}`)
+        if (!service.interface) {
+            const ServiceClass = require(`../services/${serviceName}`);
+            services[service.name] = new ServiceClass(servicePath, service)
+        }
 
         // Check whether it is an installation or an update
         const isFirstDownload = !fs.existsSync(servicePath)
@@ -42,19 +44,7 @@ export async function checkServices(): Promise<void> {
                 await download(service, !isFirstDownload)
 
                 if (isFirstDownload) {
-                    if (service.name !== 'MariaDB') {
-                        // Download the stub configuration file from GitHub
-                        const response = await fetch(`https://github.com/electronfriends/wemp/raw/main/stubs/${serviceName}/${service.config}`)
-                        const body = await response.text()
-
-                        // Replace the placeholder for the services path
-                        const content = body.replace('{servicesPath}', config.paths.services)
-
-                        fs.writeFileSync(path.join(servicePath, service.config), content)
-                    } else {
-                        // MariaDB doesn't need a stub, it just needs to be installed
-                        await services[service.name].install()
-                    }
+                    await services[service.name].install()
                 }
             } catch (error: any) {
                 logger.write(error.message, () => onServiceDownloadError(service.name))
@@ -115,12 +105,12 @@ export async function startService(name: string): Promise<void> {
     const service = services[name]
 
     if (service) {
-        await service.start()
-            .then(() => updateMenuStatus(name, true))
-            .catch((error: string) => {
-                updateMenuStatus(name, false)
-                logger.write(error, () => onServiceError(name))
-            })
+        try {
+            await service.start()
+            updateMenuStatus(name, true)
+        } catch (error: any) {
+            logger.write(error.message, () => onServiceError(name))
+        }
     } else {
         logger.write(`Service '${name}' does not exist.`)
     }
@@ -149,9 +139,12 @@ export async function stopService(name: string, shouldRestart: boolean = false):
     const service = services[name]
 
     if (service) {
-        await service.stop()
-            .then(() => updateMenuStatus(name, false))
-            .catch(logger.write)
+        try {
+            await service.stop();
+            updateMenuStatus(name, false)
+        } catch (error: any) {
+            logger.write(error.message);
+        }
 
         if (shouldRestart) {
             await startService(name)

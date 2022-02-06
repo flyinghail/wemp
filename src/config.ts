@@ -10,7 +10,7 @@ export default {
     paths: {
         icons: path.join(app.getAppPath(), 'icons'),
         logs: path.join(app.getPath('userData'), 'error.log'),
-        services: settings.getSync('path')?.toString() || 'C:\\Wemp'
+        services: settings.getSync('path')?.toString() || 'C:\\wemp'
     },
     services: [
         {
@@ -21,10 +21,10 @@ export default {
             url: 'https://nginx.org/download/nginx-{version}.zip'
         },
         {
-            name: 'MariaDB',
-            version: '10.6.5',
-            config: 'data/my.ini',
-            url: 'https://archive.mariadb.org/mariadb-{version}/winx64-packages/mariadb-{version}-winx64.zip'
+            name: 'MySQL8',
+            version: '8.0.28',
+            config: 'my.ini',
+            url: 'https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-{version}-winx64.zip'
         },
         {
             name: 'PHP',

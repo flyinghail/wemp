@@ -1,5 +1,5 @@
 productName: "Wemp"
-appId: "com.electronfriends.wemp"
+appId: "com.hail.wemp"
 
 files:
   - "dist/"
