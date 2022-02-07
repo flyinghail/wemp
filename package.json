@@ -1,6 +1,6 @@
 {
   "name": "wemp",
-  "version": "0.5.9",
+  "version": "0.6.0",
   "description": "Wemp is a simple menu for managing Nginx, MySQL and PHP on Windows.",
   "homepage": "https://github.com/flyinghail/wemp#readme",
   "bugs": {
