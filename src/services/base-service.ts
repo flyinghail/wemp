@@ -5,26 +5,29 @@ import Process from "../utils/process";
 
 export abstract class BaseService {
     public process?: Process;
-    protected readonly path: string;
-    protected readonly config: ServiceConfig;
+    protected readonly basePath: string;
+    protected readonly servicePath: string;
+    protected readonly serviceName: string;
+    protected readonly configFile: string;
 
-    constructor(path: string, config: ServiceConfig) {
-        this.path = path;
-        this.config = config;
+    constructor(basePath: string, service: ServiceConfig) {
+        this.basePath = basePath;
+        this.configFile = service.config;
+        this.serviceName = service.name.toLowerCase();
+        this.servicePath = path.join(basePath, this.serviceName);
     }
 
     async install(): Promise<void> {
-        const { name, config } = this.config;
-        const serviceName = name.toLowerCase()
-
         // Download the stub configuration file from GitHub
-        const response = await fetch(`https://github.com/flyinghail/wemp/raw/main/stubs/${serviceName}/${config}`)
+        const response = await fetch(`https://github.com/flyinghail/wemp/raw/main/stubs/${this.serviceName}/${this.configFile}`)
         const body = await response.text()
 
         // Replace the placeholder for the services path
-        const content = body.replace('{servicesPath}', this.path)
+        const content = body
+            .replace(/{basePath}/g, this.basePath)
+            .replace(/{servicePath}/g, this.servicePath)
 
-        fs.writeFileSync(path.join(this.path, config), content)
+        fs.writeFileSync(path.join(this.servicePath, this.configFile), content)
     }
 
     abstract start(): Promise<void>;
@@ -34,7 +37,7 @@ export abstract class BaseService {
         const command = parts.pop();
 
         this.process = new Process(`${command}`, args, {
-            cwd: path.join(this.path, ...parts)
+            cwd: path.join(this.servicePath, ...parts)
         });
         await this.process.run();
     }

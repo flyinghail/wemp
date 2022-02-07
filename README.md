@@ -7,11 +7,11 @@
 
 ## Introduction
 
-Wemp is a simple menu for managing [Nginx](https://nginx.org), [MySQL8](https://mysql.com) and [PHP](https://php.net) on Windows.
-
-Forked from [electronfriends/wemp](https://github.com/electronfriends/wemp)
+Wemp is a simple menu for managing [Nginx](https://nginx.org), [MySQL](https://mysql.com) and [PHP](https://php.net) on Windows.
 
 The aim of this project is to always provide the latest version of these services without having to update them manually.
+
+Forked from [electronfriends/wemp](https://github.com/electronfriends/wemp)
 
 ## Features
 
@@ -53,7 +53,7 @@ No. The services are installed independently of Wemp and remain untouched when W
 
 - [Electron](https://www.electronjs.org) for the tools to create a Windows application with JavaScript.
 
-- [Nginx](https://nginx.org), [MySQL8](https://mysql.com), [PHP](https://php.net) and [phpMyAdmin](https://www.phpmyadmin.net) for providing their services.
+- [Nginx](https://nginx.org), [MySQL](https://mysql.com), [PHP](https://php.net) and [phpMyAdmin](https://www.phpmyadmin.net) for providing their services.
 
 - [Icons8.com](https://icons8.com) for the free [Fluency](https://icons8.com/icon/set/logs/fluency) icons that we use in our menu.
 

@@ -30,8 +30,8 @@ export async function checkServices(): Promise<void> {
 
         // Create a service instance
         if (!service.interface) {
-            const ServiceClass = require(`../services/${serviceName}`);
-            services[service.name] = new ServiceClass(servicePath, service)
+            const { default: ServiceClass } = require(`../services/${serviceName}`);
+            services[service.name] = new ServiceClass(config.paths.services, service)
         }
 
         // Check whether it is an installation or an update
@@ -43,7 +43,7 @@ export async function checkServices(): Promise<void> {
             try {
                 await download(service, !isFirstDownload)
 
-                if (isFirstDownload) {
+                if (isFirstDownload && !service.interface) {
                     await services[service.name].install()
                 }
             } catch (error: any) {

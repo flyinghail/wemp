@@ -21,7 +21,7 @@ export default {
             url: 'https://nginx.org/download/nginx-{version}.zip'
         },
         {
-            name: 'MySQL8',
+            name: 'MySQL',
             version: '8.0.28',
             config: 'my.ini',
             url: 'https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-{version}-winx64.zip'

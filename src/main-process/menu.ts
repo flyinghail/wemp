@@ -23,7 +23,7 @@ export function createMenu(): void {
     menu.append(new MenuItem({
         icon: path.join(config.paths.icons, 'wemp.png'),
         label: `Wemp ${app.getVersion()}`,
-        sublabel: 'by ElectronFriends mod by FlyingHail',
+        sublabel: 'by FlyingHail',
         submenu: [
             {
                 icon: path.join(config.paths.icons, 'restart.png'),
