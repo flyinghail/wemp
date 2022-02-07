@@ -4,6 +4,9 @@ appId: "com.hail.wemp"
 files:
   - "dist/"
   - "icons/"
+  -
+    from: "node_modules/electron-prompt/lib/page"
+    to: "dist/page"
 
 nsis:
   deleteAppDataOnUninstall: true

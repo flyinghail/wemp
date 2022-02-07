@@ -1,10 +1,13 @@
 import { app, Menu, MenuItem, shell, Tray } from 'electron'
 import { autoUpdater } from 'electron-updater'
 import path from 'path'
+import mysql from 'mysql2/promise'
 
 import config from '../config'
 import * as logger from '../utils/logger'
+import { inputPrompt } from "../utils/components";
 import { setServicesPath, startService, stopService, stopServices } from './manager'
+
 
 /**
  * The context menu.
@@ -46,51 +49,96 @@ export function createMenu(): void {
     menu.append(new MenuItem({ type: 'separator' }))
 
     for (const service of config.services) {
-        if (service.interface) continue
-
         const serviceName = service.name.toLowerCase()
 
-        menu.append(new MenuItem({
-            icon: path.join(config.paths.icons, serviceName + '.png'),
-            id: service.name,
-            label: service.name,
-            submenu: [
-                {
-                    icon: path.join(config.paths.icons, serviceName + '.png'),
-                    label: `${service.name} ${service.version}`,
-                    enabled: false
-                },
-                { type: 'separator' },
-                {
+        let submenu: Electron.MenuItemConstructorOptions[] = [
+            {
+                icon: path.join(config.paths.icons, serviceName + '.png'),
+                label: `${service.name} ${service.version}`,
+                enabled: false
+            },
+            { type: 'separator' }
+        ]
+        if (!service.interface) {
+            submenu.push({
                     icon: path.join(config.paths.icons, 'circled-play.png'),
                     id: `${service.name}-start`,
                     label: 'Start',
-                    click: () => startService(service.name)
+                    click: () => startService(service.name),
                 },
                 {
                     icon: path.join(config.paths.icons, 'restart.png'),
                     id: `${service.name}-restart`,
                     label: 'Restart',
-                    click: () => stopService(service.name, true)
+                    click: () => stopService(service.name, true),
                 },
                 {
                     icon: path.join(config.paths.icons, 'shutdown.png'),
                     id: `${service.name}-stop`,
                     label: 'Stop',
-                    click: () => stopService(service.name)
+                    click: () => stopService(service.name),
                 },
                 { type: 'separator' },
                 {
-                    icon: path.join(config.paths.icons, 'settings.png'),
-                    label: 'Open Configuration',
-                    click: () => shell.openPath(path.join(config.paths.services, serviceName, service.config))
-                },
-                {
-                    icon: path.join(config.paths.icons, 'file-explorer.png'),
-                    label: 'Open Directory',
-                    click: () => shell.openPath(path.join(config.paths.services, serviceName))
-                }
-            ]
+                    icon: path.join(config.paths.icons, 'password.png'),
+                    label: 'Change Password',
+                    click: async () => {
+                        let connection
+                        try {
+                            const password = await inputPrompt(
+                                'Change Password',
+                                'Current Password',
+                                'If no password has been set after installation, keep empty'
+                            );
+                            if (password === null) {
+                                return;
+                            }
+
+                            connection = await mysql.createConnection({
+                                host: 'localhost',
+                                user: 'root',
+                                password
+                            });
+
+                            let newPassword = await inputPrompt(
+                                'Change Password',
+                                'New Password',
+                                'Please make sure you remember the new password'
+                            );
+                            if (!newPassword) {
+                                return;
+                            }
+
+                            newPassword = newPassword.replace(/'/g, '\\\'');
+                            await connection.execute(`ALTER USER 'root'@'localhost' IDENTIFIED BY '${newPassword}'`)
+                            await connection.execute("FLUSH PRIVILEGES");
+                        } catch (e: any) {
+                            console.error(e.message)
+                        } finally {
+                            connection?.end()
+                        }
+                    },
+                    visible: serviceName === 'mysql'
+                })
+        }
+        submenu.push(
+            {
+                icon: path.join(config.paths.icons, 'settings.png'),
+                label: 'Open Configuration',
+                click: () => shell.openPath(path.join(config.paths.services, serviceName, service.config))
+            },
+            {
+                icon: path.join(config.paths.icons, 'file-explorer.png'),
+                label: 'Open Directory',
+                click: () => shell.openPath(path.join(config.paths.services, serviceName))
+            }
+        );
+
+        menu.append(new MenuItem({
+            icon: path.join(config.paths.icons, serviceName + '.png'),
+            id: service.name,
+            label: service.name,
+            submenu
         }))
     }
 
@@ -111,7 +159,7 @@ export function createMenu(): void {
     // Create the system tray
     tray = new Tray(path.join(config.paths.icons, 'wemp.png'))
     tray.setContextMenu(menu)
-    tray.setToolTip('Click to manage Nginx, MariaDB and PHP')
+    tray.setToolTip('Click to manage Nginx, MySQL and PHP')
     tray.on('click', () => tray.popUpContextMenu())
 }
 

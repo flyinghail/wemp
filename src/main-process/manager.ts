@@ -43,7 +43,7 @@ export async function checkServices(): Promise<void> {
             try {
                 await download(service, !isFirstDownload)
 
-                if (isFirstDownload && !service.interface) {
+                if (isFirstDownload) {
                     await services[service.name].install()
                 }
             } catch (error: any) {

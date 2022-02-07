@@ -15,22 +15,27 @@
   "main": "dist/bundle.js",
   "scripts": {
     "build": "webpack --mode=production",
-    "build:dev": "webpack --mode=development",
+    "build:dev": "webpack --mode=development && cpr ./node_modules/electron-prompt/lib/page ./dist/page -o",
     "deploy": "npm run build && electron-builder --publish always",
     "package": "npm run build:dev && electron-builder --publish never",
     "start": "npm run build:dev && electron ."
   },
   "dependencies": {
-    "electron-dynamic-prompt": "^1.0.3",
+    "@electron/remote": "^2.0.4",
+    "cardinal": "^2.1.1",
+    "electron-prompt": "^1.7.0",
     "electron-settings": "^4.0.2",
     "electron-updater": "^4.6.1",
+    "mysql2": "^2.3.3",
     "node-fetch": "^3.2.0",
     "unzipper": "^0.10.11"
   },
   "devDependencies": {
+    "@types/electron-prompt": "^1.6.1",
     "@types/node": "^17.0.15",
     "@types/node-fetch": "^3.0.2",
     "@types/unzipper": "^0.10.5",
+    "cpr": "^3.0.1",
     "electron": "^17.0.0",
     "electron-builder": "^22.14.5",
     "ts-loader": "^9.2.6",

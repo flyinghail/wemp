@@ -25,6 +25,10 @@ if (!gotTheLock) {
         app.exit()
     })
 
+    app.on('window-all-closed', function() {
+        // Do nothing. By default, closing the last window will close the app.
+    });
+
     // Set everything up as soon as our application is ready
     app.whenReady().then(async () => {
         await checkServices().then(createMenu)
