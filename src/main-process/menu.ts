@@ -1,12 +1,13 @@
-import { app, Menu, MenuItem, shell, Tray } from 'electron'
+import { app, Menu, MenuItem, shell, Tray, Notification } from 'electron'
 import { autoUpdater } from 'electron-updater'
 import path from 'path'
-import mysql from 'mysql2/promise'
+import mysql, { Connection } from 'mysql2/promise'
 
 import config from '../config'
 import * as logger from '../utils/logger'
 import { inputPrompt } from "../utils/components";
 import { setServicesPath, startService, stopService, stopServices } from './manager'
+import { onPasswordChanged } from '../utils/notification'
 
 
 /**
@@ -83,22 +84,33 @@ export function createMenu(): void {
                     icon: path.join(config.paths.icons, 'password.png'),
                     label: 'Change Password',
                     click: async () => {
-                        let connection
+                        let connection: Connection | null
                         try {
-                            const password = await inputPrompt(
-                                'Change Password',
-                                'Current Password',
-                                'If no password has been set after installation, keep empty'
-                            );
-                            if (password === null) {
-                                return;
-                            }
-
                             connection = await mysql.createConnection({
                                 host: 'localhost',
-                                user: 'root',
-                                password
+                                user: 'root'
                             });
+                        } catch (e) {
+                            connection = null;
+                        }
+
+                        try {
+                            if (connection === null) {
+                                const password = await inputPrompt(
+                                    'Change Password',
+                                    'Current Password',
+                                    'If no password has been set after installation, keep empty'
+                                );
+                                if (password === null) {
+                                    return;
+                                }
+
+                                connection = await mysql.createConnection({
+                                    host: 'localhost',
+                                    user: 'root',
+                                    password
+                                });
+                            }
 
                             let newPassword = await inputPrompt(
                                 'Change Password',
@@ -112,10 +124,12 @@ export function createMenu(): void {
                             newPassword = newPassword.replace(/'/g, '\\\'');
                             await connection.execute(`ALTER USER 'root'@'localhost' IDENTIFIED BY '${newPassword}'`)
                             await connection.execute("FLUSH PRIVILEGES");
+
+                            onPasswordChanged();
                         } catch (e: any) {
                             console.error(e.message)
                         } finally {
-                            connection?.end()
+                            await connection?.end()
                         }
                     },
                     visible: serviceName === 'mysql'

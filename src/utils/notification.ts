@@ -70,3 +70,18 @@ export function onServicesReady(): void {
     notification.on('click', () => notification.close())
     notification.show()
 }
+
+/**
+ * Show this notification when the mysql password changed.
+ */
+export function onPasswordChanged(): void {
+    const notification = new Notification({
+        title: 'The password of MySQL have been changed!',
+        body: 'Please use the new password to connect MySQL server.',
+        silent: true,
+        timeoutType: 'default'
+    })
+
+    notification.on('click', () => notification.close())
+    notification.show()
+}
