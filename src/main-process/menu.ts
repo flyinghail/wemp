@@ -108,6 +108,16 @@ export function createMenu(): void {
     menu.append(new MenuItem({ type: 'separator' }))
 
     menu.append(new MenuItem({
+        type: 'checkbox',
+        label: 'Auto-start on startup',
+        checked: app.getLoginItemSettings().openAtLogin,
+        click: () => app.setLoginItemSettings({
+            openAtLogin: !app.getLoginItemSettings().openAtLogin,
+            path: app.getPath('exe')
+        })
+    }))
+
+    menu.append(new MenuItem({
         icon: path.join(config.paths.icons, 'update.png'),
         label: 'Check for Updates',
         click: () => autoUpdater.checkForUpdatesAndNotify()
