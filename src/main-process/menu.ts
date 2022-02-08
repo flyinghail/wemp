@@ -1,7 +1,7 @@
-import { app, Menu, MenuItem, shell, Tray, Notification } from 'electron'
+import { app, Menu, MenuItem, shell, Tray } from 'electron'
 import { autoUpdater } from 'electron-updater'
 import path from 'path'
-import mysql, { Connection } from 'mysql2/promise'
+import mysql, { Connection, escape } from 'mysql2/promise'
 
 import config from '../config'
 import * as logger from '../utils/logger'
@@ -97,7 +97,7 @@ export function createMenu(): void {
                         try {
                             if (connection === null) {
                                 const password = await inputPrompt(
-                                    'Change Password',
+                                    'Change root@localhost Password',
                                     'Current Password',
                                     'If no password has been set after installation, keep empty'
                                 );
@@ -113,7 +113,7 @@ export function createMenu(): void {
                             }
 
                             let newPassword = await inputPrompt(
-                                'Change Password',
+                                'Change root@localhost Password',
                                 'New Password',
                                 'Please make sure you remember the new password'
                             );
@@ -121,8 +121,7 @@ export function createMenu(): void {
                                 return;
                             }
 
-                            newPassword = newPassword.replace(/'/g, '\\\'');
-                            await connection.execute(`ALTER USER 'root'@'localhost' IDENTIFIED BY '${newPassword}'`)
+                            await connection.execute(`ALTER USER 'root'@'localhost' IDENTIFIED BY ${escape(newPassword)}`)
                             await connection.execute("FLUSH PRIVILEGES");
 
                             onPasswordChanged();
