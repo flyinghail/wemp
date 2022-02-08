@@ -1,12 +1,14 @@
 import { dialog } from 'electron'
 import settings from 'electron-settings'
 import fs from 'fs'
+import mysql, { Connection, escape } from "mysql2/promise";
 import path from 'path'
 
 import config from '../config'
+import { inputPrompt } from "../utils/components";
 import download from '../utils/download'
 import * as logger from '../utils/logger'
-import { onServiceDownload, onServiceDownloadError, onServiceError } from '../utils/notification'
+import { onPasswordChanged, onServiceDownload, onServiceDownloadError, onServiceError } from '../utils/notification'
 import { updateMenuStatus } from './menu'
 
 /**
@@ -166,5 +168,57 @@ export async function stopServices(shouldRestart: boolean = false): Promise<void
         }
 
         await stopService(service.name, shouldRestart)
+    }
+}
+
+/**
+ * Change root password for MySQL
+ */
+export async function changeRootPassword(): Promise<void> {
+    let connection: Connection | null
+    try {
+        connection = await mysql.createConnection({
+            host: 'localhost',
+            user: 'root'
+        });
+    } catch (e) {
+        connection = null;
+    }
+
+    try {
+        if (connection === null) {
+            const password = await inputPrompt(
+                'Change root@localhost Password',
+                'Current Password',
+                'If no password has been set after installation, keep empty'
+            );
+            if (password === null) {
+                return;
+            }
+
+            connection = await mysql.createConnection({
+                host: 'localhost',
+                user: 'root',
+                password
+            });
+        }
+
+        let newPassword = await inputPrompt(
+            'Change root@localhost Password',
+            'New Password',
+            'Please make sure you remember the new password'
+        );
+        if (!newPassword) {
+            return;
+        }
+
+        await connection.execute(`ALTER USER 'root'@'localhost' IDENTIFIED BY ${escape(newPassword)}`)
+        await connection.execute("FLUSH PRIVILEGES");
+
+        onPasswordChanged();
+    } catch (e: any) {
+        console.error(e.message)
+    } finally {
+        await connection?.end()
     }
 }
