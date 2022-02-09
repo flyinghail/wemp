@@ -39,12 +39,6 @@ If you need help with something, [create a new issue](https://github.com/flyingh
 
 ## FAQs
 
-### How can I have Wemp start automatically at startup?
-
-Press <kbd>Win</kbd> + <kbd>R</kbd>, type `shell:startup` and press <kbd>Enter</kbd>. This will open the Explorer, where you'll need to create a shortcut of Wemp.
-
-Once you have done that, Wemp will start automatically at startup.
-
 ### Will the services be deleted if I uninstall Wemp?
 
 No. The services are installed independently of Wemp and remain untouched when Wemp is uninstalled.
