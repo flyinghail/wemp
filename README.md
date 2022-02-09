@@ -45,6 +45,8 @@ No. The services are installed independently of Wemp and remain untouched when W
 
 ## Thanks to
 
+- [ElectronFriends](https://github.com/electronfriends) has created excellent app [Wemp](https://github.com/electronfriends/wemp)
+ 
 - [Electron](https://www.electronjs.org) for the tools to create a Windows application with JavaScript.
 
 - [Nginx](https://nginx.org), [MySQL](https://mysql.com), [PHP](https://php.net) and [phpMyAdmin](https://www.phpmyadmin.net) for providing their services.
