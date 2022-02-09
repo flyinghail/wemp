@@ -113,7 +113,8 @@ export function createMenu(): void {
         checked: app.getLoginItemSettings().openAtLogin,
         click: () => app.setLoginItemSettings({
             openAtLogin: !app.getLoginItemSettings().openAtLogin,
-            path: app.getPath('exe')
+            path: app.getPath('exe'),
+            args: ['--startup'],
         })
     }))
 

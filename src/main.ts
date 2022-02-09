@@ -32,7 +32,11 @@ if (!gotTheLock) {
     // Set everything up as soon as our application is ready
     app.whenReady().then(async () => {
         await checkServices().then(createMenu)
-        await startServices().then(onServicesReady)
+        await startServices().then(() => {
+            if (!process.argv.includes('--startup')) {
+                onServicesReady();
+            }
+        })
 
         if (app.isPackaged) {
             autoUpdater.checkForUpdatesAndNotify()
