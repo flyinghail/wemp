@@ -31,7 +31,7 @@ export default {
             version: '8.1.2',
             config: 'php.ini',
             ignore: ['extras/'],
-            url: 'https://windows.php.net/downloads/releases/php-{version}-nts-Win32-vs16-x64.zip'
+            url: 'https://phpdev.toolsforresearch.com/php-{version}-nts-Win32-vs16-x64.zip'
         },
         {
             name: 'phpMyAdmin',
