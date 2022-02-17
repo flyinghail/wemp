@@ -1,4 +1,5 @@
 import { app, Menu, MenuItem, shell, Tray } from 'electron'
+import settings from 'electron-settings'
 import { autoUpdater } from 'electron-updater'
 import path from 'path'
 
@@ -107,14 +108,18 @@ export function createMenu(): void {
 
     menu.append(new MenuItem({ type: 'separator' }))
 
+    const options = {
+        path: app.getPath('exe'),
+        args: ['--startup'],
+    }
+    const { openAtLogin } = app.getLoginItemSettings(options)
     menu.append(new MenuItem({
         type: 'checkbox',
         label: 'Auto-start on startup',
-        checked: app.getLoginItemSettings().openAtLogin,
+        checked: openAtLogin,
         click: () => app.setLoginItemSettings({
-            openAtLogin: !app.getLoginItemSettings().openAtLogin,
-            path: app.getPath('exe'),
-            args: ['--startup'],
+            openAtLogin: !openAtLogin,
+            ...options
         })
     }))
 
