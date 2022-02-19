@@ -1,5 +1,4 @@
 import { app, Menu, MenuItem, shell, Tray } from 'electron'
-import settings from 'electron-settings'
 import { autoUpdater } from 'electron-updater'
 import path from 'path'
 
