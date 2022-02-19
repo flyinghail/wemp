@@ -53,7 +53,8 @@ export default async function download(service: any, isUpdate: boolean): Promise
             .on('error', (error) => {
                 // Fallback to archives if PHP has a newer version
                 if (service.name === 'PHP' && error.message.includes('invalid signature')) {
-                    service.url = service.url.replace('releases/', 'releases/archives/')
+                    const filename = service.url.split('/').pop()
+                    service.url = `https://windows.php.net/downloads/releases/archives/${filename}`
 
                     return download(service, isUpdate)
                         .then(resolve)
