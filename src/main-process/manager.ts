@@ -14,7 +14,7 @@ import { updateMenuStatus } from './menu'
 /**
  * Store the service objects.
  */
-const services: {[key: string]: Service} = {}
+const services: { [key: string]: Service } = {}
 
 /**
  * Check if any of the services need to be installed or updated.
@@ -190,7 +190,7 @@ export async function changeRootPassword(): Promise<void> {
             const password = await inputPrompt(
                 'Change root@localhost Password',
                 'Current Password',
-                'If no password has been set after installation, keep empty'
+                'Please input current password for root@localhost',
             );
             if (password === null) {
                 return;
