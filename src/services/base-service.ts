@@ -5,6 +5,7 @@ import Process from "../utils/process";
 
 export abstract class BaseService {
     public process?: Process;
+    protected name: string = 'Service';
     protected readonly basePath: string;
     protected readonly servicePath: string;
     protected readonly serviceName: string;
@@ -36,7 +37,7 @@ export abstract class BaseService {
         const parts = cmd.split('/');
         const command = parts.pop();
 
-        this.process = new Process(`${command}`, args, {
+        this.process = new Process(this.name, `${command}`, args, {
             cwd: path.join(this.servicePath, ...parts)
         });
         await this.process.run();

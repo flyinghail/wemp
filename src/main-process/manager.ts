@@ -141,12 +141,8 @@ export async function stopService(name: string, shouldRestart: boolean = false):
     const service = services[name]
 
     if (service) {
-        try {
-            await service.stop();
-            updateMenuStatus(name, false)
-        } catch (error: any) {
-            logger.write(error.message);
-        }
+        await service.stop();
+        updateMenuStatus(name, false)
 
         if (shouldRestart) {
             await startService(name)
