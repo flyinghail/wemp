@@ -1,6 +1,6 @@
 {
   "name": "wemp",
-  "version": "0.6.9",
+  "version": "0.6.10",
   "description": "Wemp is a simple menu for managing Nginx, MySQL and PHP on Windows.",
   "homepage": "https://github.com/flyinghail/wemp#readme",
   "bugs": {
@@ -25,22 +25,22 @@
     "cardinal": "^2.1.1",
     "electron-prompt": "^1.7.0",
     "electron-settings": "^4.0.2",
-    "electron-updater": "^5.0.1",
+    "electron-updater": "^5.0.5",
     "mysql2": "^2.3.3",
-    "node-fetch": "^3.2.4",
+    "node-fetch": "^3.2.6",
     "unzipper": "^0.10.11"
   },
   "devDependencies": {
     "@types/electron-prompt": "^1.6.1",
-    "@types/node": "^17.0.35",
+    "@types/node": "^18.0.1",
     "@types/node-fetch": "^3.0.2",
     "@types/unzipper": "^0.10.5",
     "cpr": "^3.0.1",
-    "electron": "^19.0.0",
-    "electron-builder": "^23.0.3",
-    "ts-loader": "^9.3.0",
-    "typescript": "^4.7.2",
-    "webpack": "^5.72.1",
-    "webpack-cli": "^4.9.2"
+    "electron": "^19.0.7",
+    "electron-builder": "^23.1.0",
+    "ts-loader": "^9.3.1",
+    "typescript": "^4.7.4",
+    "webpack": "^5.73.0",
+    "webpack-cli": "^4.10.0"
   }
 }
