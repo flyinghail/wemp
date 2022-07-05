@@ -23,7 +23,7 @@ export abstract class BaseService {
         const response = await fetch(`https://github.com/flyinghail/wemp/raw/main/stubs/${this.serviceName}/${this.configFile}`)
         const body = await response.text()
 
-        // Replace the placeholder for the services path
+        // Set the services path
         const content = body
             .replace(/{basePath}/g, this.basePath)
             .replace(/{servicePath}/g, this.servicePath)

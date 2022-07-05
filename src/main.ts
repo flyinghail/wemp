@@ -31,7 +31,8 @@ if (!gotTheLock) {
 
     // Set everything up as soon as our application is ready
     app.whenReady().then(async () => {
-        await checkServices().then(createMenu)
+        createMenu()
+        await checkServices()
         await startServices().then(() => {
             if (!process.argv.includes('--startup')) {
                 onServicesReady();
@@ -42,7 +43,7 @@ if (!gotTheLock) {
             autoUpdater.checkForUpdatesAndNotify()
 
             // Check for updates every 30 minutes
-            setInterval(() => autoUpdater.checkForUpdatesAndNotify(), 30 * 60 * 1000)
+            setInterval(() => autoUpdater.checkForUpdatesAndNotify(), 6 * 60 * 60 * 1000)
         }
     })
 }
