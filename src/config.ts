@@ -15,14 +15,14 @@ export default {
     services: [
         {
             name: 'Nginx',
-            version: '1.22.0',
+            version: '1.22.1',
             config: 'conf/nginx.conf',
             ignore: ['conf/', 'html/', 'logs/'],
             url: 'https://nginx.org/download/nginx-{version}.zip'
         },
         {
             name: 'MySQL',
-            version: '8.0.30',
+            version: '8.0.31',
             config: 'my.ini',
             url: 'https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-{version}-winx64.zip'
         },
