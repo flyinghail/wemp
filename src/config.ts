@@ -22,7 +22,7 @@ export default {
         },
         {
             name: 'MySQL',
-            version: '8.0.32',
+            version: '8.0.33',
             config: 'my.ini',
             url: 'https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-{version}-winx64.zip'
         },
