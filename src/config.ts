@@ -22,13 +22,13 @@ export default {
         },
         {
             name: 'MySQL',
-            version: '8.0.33',
+            version: '8.2.0',
             config: 'my.ini',
             url: 'https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-{version}-winx64.zip'
         },
         {
             name: 'PHP',
-            version: '8.2.7',
+            version: '8.2.12',
             config: 'php.ini',
             ignore: ['extras/'],
             url: 'https://phpdev.toolsforresearch.com/php-{version}-nts-Win32-vs16-x64.zip'
