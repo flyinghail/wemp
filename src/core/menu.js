@@ -83,6 +83,12 @@ function createServiceMenuItem(service) {
 
   submenu.push(
     {
+      icon: icons.password,
+      label: 'Change Password',
+      click: () => changeRootPassword(),
+      visible: service.id === 'mysql'
+    },
+    {
       icon: icons.settings,
       label: 'Open Configuration',
       click: () => shell.openPath(path.join(config.paths.services, service.id, service.config))
@@ -91,12 +97,6 @@ function createServiceMenuItem(service) {
       icon: icons.folder,
       label: 'Open Directory',
       click: () => shell.openPath(path.join(config.paths.services, service.id))
-    },
-    {
-      icon: icons.password,
-      label: 'Change Password',
-      click: () => changeRootPassword(),
-      visible: service.id === 'mysql'
     }
   );
 

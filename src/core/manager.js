@@ -242,55 +242,54 @@ function watchServiceConfig(id) {
   });
 }
 
-
 /**
  * Change root password for MySQL
  */
 export async function changeRootPassword() {
-    let connection = null
-    try {
-        connection = await mysql.createConnection({
-            host: 'localhost',
-            user: 'root'
-        });
-    } catch (e) {
-        connection = null;
+  let connection
+  try {
+    connection = await mysql.createConnection({
+      host: 'localhost',
+      user: 'root'
+    });
+  } catch (e) {
+    connection = null;
+  }
+
+  try {
+    if (connection === null) {
+      const password = await inputPrompt(
+        'Change root@localhost Password',
+        'Current Password',
+        'Please input current password for root@localhost',
+      );
+      if (password === null) {
+        return;
+      }
+
+      connection = await mysql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        password
+      });
     }
 
-    try {
-        if (connection === null) {
-            const password = await inputPrompt(
-                'Change root@localhost Password',
-                'Current Password',
-                'Please input current password for root@localhost',
-            );
-            if (password === null) {
-                return;
-            }
-
-            connection = await mysql.createConnection({
-                host: 'localhost',
-                user: 'root',
-                password
-            });
-        }
-
-        let newPassword = await inputPrompt(
-            'Change root@localhost Password',
-            'New Password',
-            'Please make sure you remember the new password'
-        );
-        if (!newPassword) {
-            return;
-        }
-
-        await connection.execute(`ALTER USER 'root'@'localhost' IDENTIFIED BY ${escape(newPassword)}`)
-        await connection.execute("FLUSH PRIVILEGES");
-
-        onPasswordChanged();
-    } catch (e) {
-        console.error(e.message)
-    } finally {
-        await connection?.end()
+    let newPassword = await inputPrompt(
+      'Change root@localhost Password',
+      'New Password',
+      'Please make sure you remember the new password'
+    );
+    if (!newPassword) {
+      return;
     }
+
+    await connection.execute(`ALTER USER 'root'@'localhost' IDENTIFIED BY ${escape(newPassword)}`)
+    await connection.execute("FLUSH PRIVILEGES");
+
+    onPasswordChanged();
+  } catch (e) {
+    console.error(e.message)
+  } finally {
+    await connection?.end()
+  }
 }
