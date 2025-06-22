@@ -1,46 +1,39 @@
 {
   "name": "wemp",
-  "version": "0.6.21",
-  "description": "Wemp is a simple menu for managing Nginx, MySQL and PHP on Windows.",
-  "homepage": "https://github.com/flyinghail/wemp#readme",
-  "bugs": {
-    "url": "https://github.com/flyinghail/wemp/issues"
-  },
+  "productName": "Wemp",
+  "version": "0.7.0",
+  "description": "Easily set up a web server with Nginx, MySQL and PHP on Windows.",
   "repository": {
     "type": "git",
     "url": "https://github.com/flyinghail/wemp.git"
   },
   "license": "MIT",
   "author": "FlyingHail",
-  "main": "dist/bundle.js",
+  "main": ".vite/build/main.js",
   "scripts": {
-    "build": "webpack --mode=production && cpr ./node_modules/electron-prompt/lib/page ./dist/page -o",
-    "build:dev": "webpack --mode=development && cpr ./node_modules/electron-prompt/lib/page ./dist/page -o",
-    "deploy": "npm run build && electron-builder --publish always",
-    "package": "npm run build:dev && electron-builder --publish never",
-    "start": "npm run build:dev && electron ."
+    "lint": "echo \"No linting configured\"",
+    "make": "electron-forge make",
+    "package": "electron-forge package",
+    "publish": "electron-forge publish",
+    "start": "electron-forge start"
   },
   "dependencies": {
-    "@electron/remote": "^2.1.0",
-    "cardinal": "^2.1.1",
     "electron-prompt": "^1.7.0",
-    "electron-settings": "^4.0.2",
-    "electron-updater": "^6.1.7",
-    "mysql2": "^3.6.5",
-    "node-fetch": "^3.3.2",
-    "unzipper": "^0.10.14"
+    "electron-settings": "^4.0.4",
+    "electron-squirrel-startup": "^1.0.1",
+    "mysql2": "^3.14.1",
+    "semver": "^7.7.2",
+    "update-electron-app": "^3.1.1",
+    "yauzl": "^3.2.0"
   },
   "devDependencies": {
-    "@types/electron-prompt": "^1.6.5",
-    "@types/node": "^20.10.0",
-    "@types/node-fetch": "^3.0.2",
-    "@types/unzipper": "^0.10.9",
-    "cpr": "^3.0.1",
-    "electron": "^27.1.2",
-    "electron-builder": "^24.9.1",
-    "ts-loader": "^9.5.1",
-    "typescript": "^5.3.2",
-    "webpack": "^5.89.0",
-    "webpack-cli": "^5.1.4"
+    "@electron-forge/cli": "^7.8.1",
+    "@electron-forge/maker-squirrel": "^7.8.1",
+    "@electron-forge/plugin-fuses": "^7.8.1",
+    "@electron-forge/plugin-vite": "^7.8.1",
+    "@electron-forge/publisher-github": "^7.8.1",
+    "@electron/fuses": "^1.8.0",
+    "electron": "^36.5.0",
+    "vite": "^6.3.5"
   }
 }

@@ -1,6 +1,6 @@
 import prompt from 'electron-prompt';
 
-const options: prompt.Options = {
+const options = {
     type: 'input',
     width: 500,
     height: 200,
