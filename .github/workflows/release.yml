@@ -28,6 +28,7 @@ jobs:
           echo "exists=$(git ls-remote --tags origin "v${{ steps.package_version.outputs.version }}" | wc -l)" >> $GITHUB_OUTPUT
 
       - name: Install dependencies
+        if: steps.check_tag.outputs.exists == '0'
         run: npm ci
 
       - name: Publish app
