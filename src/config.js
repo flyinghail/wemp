@@ -26,14 +26,14 @@ const SERVICES = [
   {
     id: 'mysql',
     name: 'MySQL',
-    version: '8.4.5',
+    version: '8.4.6',
     config: 'my.ini',
     downloadUrl: 'https://dev.mysql.com/get/Downloads/MySQL-{minor}/mysql-{version}-winx64.zip'
   },
   {
     id: 'php',
     name: 'PHP',
-    version: '8.4.8',
+    version: '8.4.11',
     config: 'php.ini',
     ignore: ['extras/'],
     downloadUrl: 'https://phpdev.toolsforresearch.com/php-{version}-nts-Win32-vs17-x64.zip'
